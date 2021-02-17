@@ -20,13 +20,13 @@ RUN  rm -rf /opt/conda &&  wget --quiet https://repo.anaconda.com/miniconda/Mini
 
 # Install jupyter (python 3 version)
 #RUN apt-get update &&  apt-get install -y python3 python3-pip python3-pandas wkhtmltopdf  && apt-get clean 
-RUN conda --version 
+RUN conda config --add channels conda-forge && conda config --set channel_priority strict 
 #RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 1
 RUN conda install jupyterlab
 RUN conda install rpy2  &&   jupyter serverextension enable --py jupyterlab --sys-prefix &&  conda install bokeh && conda install ipywidgets && conda install jupyterhub && conda install pandas && rm -rf /root/.cache
 # jupyter nbextension enable --py --sys-prefix widgetsnbextension && 
 
-RUN conda install -c conda-forge jupyter_contrib_nbextensions && jupyter contrib nbextension install --user  && conda install jupyter_nbextensions_configurator && jupyter nbextensions_configurator enable --sys-prefix  && rm -rf /root/.cache
+RUN conda install jupyter_contrib_nbextensions && jupyter contrib nbextension install --user  && conda install jupyter_nbextensions_configurator && jupyter nbextensions_configurator enable --sys-prefix  && rm -rf /root/.cache
 
 # Install python3 kernel
 #RUN conda create -n ipykernel_py3 python=2 ipykernel  && bash -c 'source activate ipykernel_py3 && python -m ipykernel install'
@@ -37,10 +37,10 @@ RUN conda install ipywidgets && jupyter nbextension enable --py widgetsnbextensi
 RUN ipython  kernel install
 
 # Install R and R kernel
-RUN conda install R && conda install r-irkernel
+RUN conda install R-base && conda install r-irkernel
 
 # install hide_code extension
-RUN conda install -c conda-forge hide_code &&  jupyter nbextension install --py hide_code --sys-prefix && jupyter nbextension enable --py hide_code --sys-prefix && jupyter serverextension enable --py hide_code --sys-prefix 
+RUN conda install hide_code &&  jupyter nbextension install --py hide_code --sys-prefix && jupyter nbextension enable --py hide_code --sys-prefix && jupyter serverextension enable --py hide_code --sys-prefix 
 
 
 WORKDIR /home/biodocker
